@@ -2,14 +2,7 @@
 
 import { logger } from './../renderer/utils/logger'
 import { createLocalStore } from './../renderer/utils/LocalStore'
-import {
-  app,
-  globalShortcut,
-  BrowserWindow,
-  ipcMain,
-  Tray,
-  nativeImage
-} from 'electron'
+import { app, BrowserWindow, globalShortcut, ipcMain, nativeImage, Tray } from 'electron'
 
 const electron = require('electron')
 const path = require('path')
@@ -62,6 +55,23 @@ app.on('activate', () => {
   if (mainWindow === null) {
     createWindow()
   }
+})
+
+var forceTakeBreakCalled = 0
+ipcMain.on('forceTakeBreak', (event, b) => {
+  if (forceTakeBreakCalled > 0) {
+    mainWindow.show()
+    if (b) {
+      mainWindow.maximize()
+    } else {
+      mainWindow.unmaximize()
+    }
+
+    mainWindow.setAlwaysOnTop(b)
+    mainWindow.setFullScreen(b)
+  }
+
+  forceTakeBreakCalled++
 })
 
 ipcMain.on('toggle-alwaysOnTop', (event, arg) => {
@@ -134,7 +144,10 @@ function getNewWindowPosition() {
     y = trayBounds.y - trayBounds.height - windowBounds.height
   }
 
-  return { x: x, y: y }
+  return {
+    x: x,
+    y: y
+  }
 }
 
 function toggleWindow() {
@@ -165,7 +178,7 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     alwaysOnTop,
     backgroundColor: '#2F384B',
-    fullscreenable: false,
+    fullscreenable: true,
     frame: false,
     icon:
       process.platform === 'darwin'
@@ -175,6 +188,8 @@ function createWindow() {
     useContentSize: true,
     width: 360,
     height: 478,
+    center: true,
+    maximizable: true,
     webPreferences: {
       backgroundThrottling: false,
       nodeIntegration: true

@@ -1,5 +1,6 @@
 import { localStore } from './index'
 import { defaults } from './../../utils/LocalStore'
+import { ipcRenderer } from 'electron'
 
 const state = {
   round: 1,
@@ -7,9 +8,12 @@ const state = {
   totalWorkRounds: 0,
   tickSounds: localStore.get('tickSounds'),
   tickSoundsDuringBreak: localStore.get('tickSoundsDuringBreak'),
-  timeLongBreak: parseInt(localStore.get('timeLongBreak')),
-  timeShortBreak: parseInt(localStore.get('timeShortBreak')),
-  timeWork: parseInt(localStore.get('timeWork')),
+  // timeLongBreak: parseInt(localStore.get('timeLongBreak')),
+  // timeShortBreak: parseInt(localStore.get('timeShortBreak')),
+  // timeWork: parseInt(localStore.get('timeWork')),
+  timeLongBreak: 0.01,
+  timeShortBreak: 0.01,
+  timeWork: 0.01,
   currentRound: 'work', // work, short-break, long-break
   volume: localStore.get('volume') || 100,
   globalShortcuts: localStore.get('globalShortcuts') || {}
@@ -41,6 +45,12 @@ const getters = {
     return state.timeWork
   },
   currentRound() {
+    console.log('currentRound: ' + state.currentRound)
+    if (state.currentRound === 'work') {
+      ipcRenderer.send('forceTakeBreak', false)
+    } else {
+      ipcRenderer.send('forceTakeBreak', true)
+    }
     return state.currentRound
   },
   volume() {

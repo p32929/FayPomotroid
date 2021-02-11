@@ -3,12 +3,6 @@
     <div class="Round-wrapper">
       <p>
         {{ round + '/' + workRounds }}
-        <span
-          v-if="totalWorkRounds > 0"
-          class="Total-rounds"
-          title="Focus rounds completed"
-          >({{ totalWorkRounds }})</span
-        >
       </p>
       <p class="TextButton" title="Reset current round" @click="callForReset">
         Reset
