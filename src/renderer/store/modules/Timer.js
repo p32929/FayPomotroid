@@ -11,9 +11,9 @@ const state = {
   // timeLongBreak: parseInt(localStore.get('timeLongBreak')),
   // timeShortBreak: parseInt(localStore.get('timeShortBreak')),
   // timeWork: parseInt(localStore.get('timeWork')),
-  timeLongBreak: 0.01,
-  timeShortBreak: 0.01,
-  timeWork: 0.01,
+  timeLongBreak: 0.1,
+  timeShortBreak: 0.1,
+  timeWork: 0.1,
   currentRound: 'work', // work, short-break, long-break
   volume: localStore.get('volume') || 100,
   globalShortcuts: localStore.get('globalShortcuts') || {}

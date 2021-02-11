@@ -60,6 +60,7 @@ app.on('activate', () => {
 var forceTakeBreakCalled = 0
 ipcMain.on('forceTakeBreak', (event, b) => {
   if (forceTakeBreakCalled > 0) {
+    mainWindow.center()
     mainWindow.show()
     if (b) {
       mainWindow.maximize()
