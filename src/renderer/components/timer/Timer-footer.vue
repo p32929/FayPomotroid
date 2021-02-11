@@ -45,8 +45,7 @@
       <div
         class="Icon-wrapper Icon-wrapper--double--right"
         :title="volume > 0 ? 'Mute' : 'Unmute'"
-        @click="toggleMute"
-        @mouseenter="volumeSliderHidden = false"
+        @click="volumeSliderHidden = !volumeSliderHidden"
       >
         <transition name="fade" mode="out-in">
           <svg
